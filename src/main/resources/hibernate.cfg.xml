@@ -16,5 +16,6 @@
 		<property name="hbm2ddl.auto">create</property>
 
 		<mapping class="com.nicolasbouvie.enverspoc.model.Person"/>
+		<mapping class="com.nicolasbouvie.enverspoc.audit.UserRevEntity"/>
 	</session-factory>
 </hibernate-configuration>
