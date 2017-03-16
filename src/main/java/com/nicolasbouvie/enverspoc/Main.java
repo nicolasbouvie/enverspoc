@@ -30,19 +30,38 @@ public class Main {
         	System.out.println(reader.find(Person.class, 2L, rev));
         }
 
-        //Retrieve all revisions from Person 1
-        AuditQuery query = reader.createQuery()
-                .forRevisionsOfEntity(Person.class, false, false)
-                .add(AuditEntity.property("id").eq(1L));
+        {
+	        //Retrieve all revisions from Person 1
+	        AuditQuery query = reader.createQuery()
+	                .forRevisionsOfEntity(Person.class, false, false)
+	                .add(AuditEntity.property("id").eq(1L));
+	
+	        List<Object[]> revs = (List<Object[]>) query.getResultList();
+	        for (Object[] rev : revs) {
+		        Person person = (Person) rev[0];
+		        UserRevEntity userRevEntity = (UserRevEntity) rev[1];
+		        RevisionType type = (RevisionType) rev[2];
+		        System.out.println(person);
+		        System.out.println(userRevEntity);
+		        System.out.println(type);
+	        }
+        }
 
-        List<Object[]> revs = (List<Object[]>) query.getResultList();
-        for (Object[] rev : revs) {
-	        Person person = (Person) rev[0];
-	        UserRevEntity userRevEntity = (UserRevEntity) rev[1];
-	        RevisionType type = (RevisionType) rev[2];
-	        System.out.println(person);
-	        System.out.println(userRevEntity);
-	        System.out.println(type);
+        {
+	        //Retrieve all revisions from Person with parent 1
+	        AuditQuery query = reader.createQuery()
+	                .forRevisionsOfEntity(Person.class, false, false)
+	                .add(AuditEntity.relatedId("parent").eq(1L));
+	
+	        List<Object[]> revs = (List<Object[]>) query.getResultList();
+	        for (Object[] rev : revs) {
+		        Person person = (Person) rev[0];
+		        UserRevEntity userRevEntity = (UserRevEntity) rev[1];
+		        RevisionType type = (RevisionType) rev[2];
+		        System.out.println(person);
+		        System.out.println(userRevEntity);
+		        System.out.println(type);
+	        }
         }
 
         HibernateUtil.shutdown();
